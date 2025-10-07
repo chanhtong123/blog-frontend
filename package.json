@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "predeploy": "npm run build",
@@ -22,7 +21,10 @@
     "quill": "2.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-quill": "2.0.0"
+    "react-quill": "2.0.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18"
   },
   "devDependencies": {
     "@types/node": "20",
