@@ -86,8 +86,8 @@ export default function AdminTagPage() {
                   <div className="flex flex-col">
                     <div className="font-medium">{tag.name}</div>
                   </div>
-                  <button onClick={() => { setEditingTag(tag.id); setEditingTagNewName(tag.name); }} className="text-blue-600">edit</button>
-                  <button onClick={() => handleDeleteTag(tag.id)} className="text-red-600">x</button>
+                  <button onClick={() => { setEditingTag(tag.id ?? null); setEditingTagNewName(tag.name); }} className="text-blue-600">edit</button>
+                  <button onClick={() => handleDeleteTag(tag.id ?? 0)} className="text-red-600">x</button>
                 </>
               )}
             </div>

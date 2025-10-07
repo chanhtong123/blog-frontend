@@ -28,10 +28,10 @@ export function Projects() {
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-20 md:grid-cols-2 xl:grid-cols-4">
           {posts.map((p) => (
             <div key={p.id} className="block">
-              <Link href={`/blog/${p.slug || p.id}`} className="block">
+              <Link href={`/blog/${ p.id}`} className="block">
                 <ProjectCard
                   img={p.thumbnailUrl || FALLBACK_IMAGE}
-                  date={p.date}
+                  date={p.createdAt}
                   excerpt={p.excerpt}           
                   title={p.title}
                 />

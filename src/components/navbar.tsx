@@ -8,6 +8,7 @@ import {
   CommandLineIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/solid";
+import Image from "next/image";
 
 const NAV_MENU = [
   { name: "Home", icon: RectangleStackIcon, href: "/" },
@@ -48,10 +49,13 @@ export default function Navbar() {
     >
       <div className="max-w-screen-xl mx-auto flex items-center justify-between p-4">
         <Link href="/" className="flex items-center space-x-3">
-          <img
+          <Image
             src="https://scontent.fsgn5-15.fna.fbcdn.net/v/t39.30808-1/552403725_2861723887358331_3843461949434406898_n.jpg?stp=dst-jpg_s100x100_tt6&_nc_cat=111&ccb=1-7&_nc_sid=1d2534&_nc_ohc=i3RM-VRi9osQ7kNvwGcbsvr&_nc_oc=AdmBTFDmrk0H1dhhKWnt6B3RQN7TW-mj6Ps4tIR3LqUW8BsPmesGEa4lPHENrRWVgV_Dz7-N2FaioDFvkw2hPLnY&_nc_ad=z-m&_nc_cid=0&_nc_zt=24&_nc_ht=scontent.fsgn5-15.fna&_nc_gid=LQ8F-bLTIkRAn4e7SH_p4g&oh=00_AfcETGAPrt3hNnxs6AwrX3TnixTSk1cT_CgA3Gh3Nfo6Cw&oe=68E69973"
             alt="Logo"
-            className="h-8 rounded-full"
+            width={32}        
+            height={32}       
+            unoptimized       
+            className="rounded-full"
           />
           <span className="text-2xl font-semibold text-black">Chanh blog</span>
         </Link>

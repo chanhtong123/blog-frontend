@@ -1,3 +1,4 @@
+// app/blog/page.tsx
 "use client";
 
 import Link from "next/link";
@@ -10,55 +11,60 @@ import ProjectCard from "@/components/project-card";
 
 const FALLBACK_IMAGE = "/image/blog-1.svg";
 
-export default function BlogPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default function BlogPageClient() {
   const [result, setResult] = useState<PagedResult<Post> | null>(null);
   const [page, setPage] = useState(0);
-  const router = useRouter();
-
-  // lấy query params từ Next.js
-  const q = typeof searchParams.search === "string" ? searchParams.search : "";
-  const tag = typeof searchParams.tag === "string" ? searchParams.tag : undefined;
-  const category =
-    typeof searchParams.category === "string"
-      ? Number(searchParams.category)
-      : undefined;
-
-  const [categories, setCategories] = useState<any[]>([]);
-  const [tags, setTags] = useState<any[]>([]);
+  const [q, setQ] = useState("");
+  const [category, setCategory] = useState<number | undefined>();
+  const [tag, setTag] = useState<string | undefined>();
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
   const size = 6;
 
+  const router = useRouter();
+
+  // Fetch posts
   useEffect(() => {
     let mounted = true;
     getPosts(page, size, category, tag, q)
       .then((res) => {
-        if (!mounted) return;
-        setResult(res);
+        if (mounted) setResult(res);
       })
-      .catch((e) => {
-        console.error(e);
-        if (mounted) setResult({ items: [], total: 0, page, size });
-      });
+      .catch(() => mounted && setResult({ items: [], total: 0, page, size }));
     return () => {
       mounted = false;
     };
-  }, [page, q, tag, category]);
+  }, [page, q, category, tag]);
 
+  // Fetch categories & tags
   useEffect(() => {
     let mounted = true;
     getCategories()
-      .then((c) => mounted && setCategories(c || []))
-      .catch(() => mounted && setCategories([]));
+      .then((c) => {
+        if (c) {
+          const validCategories = c.filter((x): x is { id: number; name: string } => x.id !== undefined);
+          setCategories(validCategories);
+        } else {
+          setCategories([]);
+        }
+      })
+  .catch(() => setCategories([]));
     getTags()
-      .then((t) => mounted && setTags(t || []))
-      .catch(() => mounted && setTags([]));
+      .then((t) => {
+        if (t) {
+          const validTags = t.filter((x): x is { id: number; name: string } => x.id !== undefined);
+          setTags(validTags);
+        } else {
+          setTags([]);
+        }
+      })
+      .catch(() => setTags([]));
+
     return () => {
       mounted = false;
     };
   }, []);
+
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">
@@ -70,89 +76,64 @@ export default function BlogPage({
         </div>
       </div>
 
-      {/* Bộ lọc */}
-      <div className="mb-6">
-        <div className="flex items-center gap-4 flex-wrap">
-          <select
-            value={category ?? ""}
-            onChange={(e) => {
-              const v = e.target.value;
-              const params = new URLSearchParams(searchParams as any);
-              if (v) params.set("category", v);
-              else params.delete("category");
-              router.push(`/blog?${params.toString()}`);
-            }}
-            className="px-3 py-1 border rounded"
-          >
-            <option value="">All categories</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
+      {/* Filters */}
+      <div className="mb-6 flex flex-wrap gap-4 items-center">
+        {/* Category */}
+        <select
+          value={category ?? ""}
+          onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : undefined)}
+          className="px-3 py-1 border rounded"
+        >
+          <option value="">All categories</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
 
-          <div className="flex gap-2 items-center flex-wrap">
-            {tags.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => {
-                  const params = new URLSearchParams(searchParams as any);
-                  params.set("tag", t.name);
-                  router.push(`/blog?${params.toString()}`);
-                }}
-                className={`text-xs px-2 py-1 rounded ${
-                  tag === t.name ? "bg-blue-600 text-white" : "bg-gray-100"
-                }`}
-              >
-                {t.name}
-                {tag === t.name && (
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const params = new URLSearchParams(searchParams as any);
-                      params.delete("tag");
-                      router.push(`/blog?${params.toString()}`);
-                    }}
-                    className="ms-2 text-xs"
-                  >
-                    ×
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          <div className="ml-auto">
+        {/* Tags */}
+        <div className="flex gap-2 flex-wrap">
+          {tags.map((t) => (
             <button
-              onClick={() => {
-                router.push(`/blog`);
-              }}
-              className="text-sm text-gray-500"
+              key={t.id}
+              onClick={() => setTag(tag === t.name ? undefined : t.name)}
+              className={`text-xs px-2 py-1 rounded ${
+                tag === t.name ? "bg-blue-600 text-white" : "bg-gray-100"
+              }`}
             >
-              Clear filters
+              {t.name}
             </button>
-          </div>
+          ))}
         </div>
+
+
+        {/* Clear filters */}
+        <button
+          onClick={() => {
+            setCategory(undefined);
+            setTag(undefined);
+            setQ("");
+            setPage(0);
+          }}
+          className="text-sm text-gray-500"
+        >
+          Clear filters
+        </button>
       </div>
 
-      {/* Danh sách blog */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {(result?.items || []).map((p) => {
-          const cat = categories.find((c) => c.id === p.categoryId);
-          return (
-            <div key={p.id} className="block">
-              <Link href={`/blog/${p.slug || p.id}`} className="block">
-                <ProjectCard
-                  img={p.thumbnailUrl || FALLBACK_IMAGE}
-                  date={p.createdAt}
-                  excerpt={p.excerpt}
-                  title={p.title}
-                />
-              </Link>
-            </div>
-          );
-        })}
+      {/* Post list */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {(result?.items || []).map((p) => (
+          <Link key={p.id} href={`/blog/${p.id}`} className="block">
+            <ProjectCard
+              img={p.thumbnailUrl || FALLBACK_IMAGE}
+              title={p.title}
+              excerpt={p.excerpt}
+              date={p.createdAt}
+            />
+          </Link>
+        ))}
       </div>
 
       {/* Pagination */}
@@ -166,8 +147,7 @@ export default function BlogPage({
             Previous
           </button>
           <div className="text-sm text-gray-600">
-            Page {result.page + 1} of{" "}
-            {Math.max(1, Math.ceil(result.total / result.size))}
+            Page {result.page + 1} of {Math.ceil(result.total / result.size)}
           </div>
           <button
             onClick={() => setPage((p) => p + 1)}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import {
   createPost,
@@ -53,14 +53,7 @@ export default function AdminBlogPage() {
   const [filterStatus, setFilterStatus] = useState<PostStatus | "ALL">("ALL");
   const [status, setStatus] = useState<PostStatus>("DRAFT");
 
-  // === Fetch initial data ===
-  useEffect(() => {
-    refresh();
-    getCategories().then((c) => setCategories(c || []));
-    getTags().then((t) => setTags(t || []));
-  }, [page, filterStatus]);
-
-  async function refresh() {
+  const refresh = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -72,7 +65,14 @@ export default function AdminBlogPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [page, filterStatus]); 
+
+  // === Fetch initial data ===
+  useEffect(() => {
+  refresh();
+  getCategories().then((c) => setCategories(c || []));
+  getTags().then((t) => setTags(t || []));
+  }, [refresh]);
 
   async function startEdit(p?: PostDto) {
     if (p) {

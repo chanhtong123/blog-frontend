@@ -32,7 +32,7 @@ export default function RelatedPosts({ categoryId, excludeId, limit = 3 }: { cat
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => (
             <div key={p.id} className="block">
-              <Link href={`/blog/${p.slug || p.id}`} className="block">
+              <Link href={`/blog/${p.id}`} className="block">
                 <ProjectCard
                   img={p.thumbnailUrl || FALLBACK_IMAGE}
                   date={p.createdAt}

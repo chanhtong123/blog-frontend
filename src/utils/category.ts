@@ -65,7 +65,7 @@ export async function createCategory(data: { name: string; description?: string 
 }
 
 function fallbackCreateCategory(data: { name: string; description?: string | null }) {
-  const id = fallbackCategories.length ? Math.max(...fallbackCategories.map((c) => c.id)) + 1 : 1;
+  const id = fallbackCategories.length ? Math.max(...fallbackCategories.map((c) => c.id ?? 0)) + 1 : 1;
   const c = { id, name: data.name, description: data.description || "" } as Category;
   fallbackCategories.push(c);
   return c;

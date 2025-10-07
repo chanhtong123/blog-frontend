@@ -162,7 +162,11 @@ export default function AdminCategoryPage() {
                     </div>
                     <button
                       onClick={() => {
-                        setEditingCategoryId(c.id);
+                        if (c.id !== undefined) {
+                          setEditingCategoryId(c.id);
+                        } else {
+                          setEditingCategoryId(null);
+                        }
                         setEditingCategoryName(c.name);
                         setEditingCategoryDescription(c.description || "");
                       }}
@@ -171,7 +175,7 @@ export default function AdminCategoryPage() {
                       edit
                     </button>
                     <button
-                      onClick={() => setDeleteId(c.id)}
+                      onClick={() => setDeleteId(c.id ?? null)}
                       className="text-red-600"
                     >
                       x

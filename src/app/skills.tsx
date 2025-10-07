@@ -59,9 +59,9 @@ export function Skills() {
 
       <div className="container mx-auto grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => (
-          <Link key={p.id} href={`/blog/${p.slug || p.id}`} className="block">
+          <Link key={p.id} href={`/blog/${ p.id}`} className="block">
             <SkillCard title={p.title} icon={Squares2X2Icon}>
-              <div className="text-sm text-gray-600 mb-2">{p.date ? new Date(p.date).toDateString() : ""}</div>
+              <div className="text-sm text-gray-600 mb-2">{p.createdAt ? new Date(p.createdAt).toDateString() : ""}</div>
               <div className="text-sm text-gray-700">{p.excerpt}</div>
             </SkillCard>
           </Link>
