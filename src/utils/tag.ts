@@ -16,9 +16,6 @@ async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> 
   return (await res.json()) as T;
 }
 
-
-
-
 function normalizeBackendList(body: any): Tag[] {
   // If backend returns pagination or wrapper, try to extract list
   if (!body) return [];

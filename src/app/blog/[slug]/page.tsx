@@ -89,14 +89,14 @@ export default function BlogDetailPage() {
         {createdAt ? new Date(createdAt).toLocaleString() : ""}
       </div>
 
-      {thumbnailUrl && (
+      {/* {thumbnailUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={thumbnailUrl}
           alt={title}
           className="w-full max-h-96 object-cover mb-6 rounded"
         />
-      )}
+      )} */}
 
       <article
         className="prose prose-lg max-w-none overflow-x-auto"
