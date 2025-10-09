@@ -169,3 +169,18 @@ export async function deletePost(id: number): Promise<boolean> {
     return false;
   }
 }
+
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  if (!API_BASE) {
+    console.warn("getPostBySlug: API_BASE not configured");
+    return null;
+  }
+  try {
+    const url = `${API_BASE}/post/slug/${slug}`;
+    const body = await fetchJson<any>(url);
+    return body?.data || body || null;
+  } catch (e) {
+    console.warn("getPostBySlug: request failed", e);
+    return null;
+  }
+}

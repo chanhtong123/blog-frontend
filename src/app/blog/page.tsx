@@ -125,7 +125,7 @@ export default function BlogPageClient() {
       {/* Post list */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {(result?.items || []).map((p) => (
-          <Link key={p.id} href={`/blog/${p.id}`} className="block">
+        <Link key={p.slug} href={`/blog/${p.slug}`} className="block">
             <ProjectCard
               img={p.thumbnailUrl || FALLBACK_IMAGE}
               title={p.title}

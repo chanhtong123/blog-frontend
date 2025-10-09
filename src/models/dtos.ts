@@ -17,6 +17,7 @@ export type PostDto = {
   createdAt: string;
   updatedAt?: string;
   author: string;
+  slug: string;
   category?: CategoryDto;
   tags?: TagDto[];
   comments?: CommentDto[];
