@@ -2,7 +2,7 @@
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
-  // output: 'export',
+  output: 'export',
   reactStrictMode: true,
   swcMinify: true,
   basePath: isProd ? "" : "",
