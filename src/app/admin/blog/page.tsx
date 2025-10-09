@@ -14,12 +14,11 @@ import PostItem from "@/components/post-item";
 import ConfirmModal from "@/components/confirm-modal";
 import type { PostStatus, PostDto, CategoryDto, TagDto, PostRequest } from "@/models/dtos";
 
-// dynamic import for ReactQuill (editor)
 let ReactQuill: any = null;
 try {
   ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
   require("react-quill/dist/quill.snow.css");
-} catch (e) {
+} catch {
   ReactQuill = null;
 }
 
@@ -65,13 +64,12 @@ export default function AdminBlogPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, filterStatus]); 
+  }, [page, filterStatus]);
 
-  // === Fetch initial data ===
   useEffect(() => {
-  refresh();
-  getCategories().then((c) => setCategories(c || []));
-  getTags().then((t) => setTags(t || []));
+    refresh();
+    getCategories().then((c) => setCategories(c || []));
+    getTags().then((t) => setTags(t || []));
   }, [refresh]);
 
   async function startEdit(p?: PostDto) {
@@ -85,9 +83,8 @@ export default function AdminBlogPage() {
       setDate(p.createdAt ? p.createdAt.substring(0, 16) : "");
       setAuthor(p.author || "");
       setStatus(p.status ?? "DRAFT");
-
-    const postTagIds = (p.tags || []).map((t) => String(t.id)); // đúng: lấy t.id
-    setSelectedTags(postTagIds);
+      const postTagIds = (p.tags || []).map((t) => String(t.id));
+      setSelectedTags(postTagIds);
     } else {
       setEditing(null);
       setTitle("");
@@ -109,31 +106,20 @@ export default function AdminBlogPage() {
     setError(null);
 
     try {
-      const tagIds = selectedTags.map((id) => Number(id));
-
-      const normalizedStatus: PostStatus =
-        status === "DRAFT" || status === "POSTED" || status === "DELETED"
-          ? status
-          : "DRAFT";
-
       const payload: Partial<PostRequest> = {
-      title,
-      excerpt,
-      content,
-      thumbnailUrl,
-      createdAt: date || new Date().toISOString(),
-      status,
-      author,
-      tagIds: selectedTags.map((id) => Number(id)),
-      categoryId
-    };
+        title,
+        excerpt,
+        content,
+        thumbnailUrl,
+        createdAt: date || new Date().toISOString(),
+        status,
+        author,
+        tagIds: selectedTags.map((id) => Number(id)),
+        categoryId,
+      };
 
-
-      if (editing) {
-        await updatePost(editing.id, payload);
-      } else {
-        await createPost(payload);
-      }
+      if (editing) await updatePost(editing.id, payload);
+      else await createPost(payload);
 
       setModalOpen(false);
       await refresh();
@@ -157,8 +143,8 @@ export default function AdminBlogPage() {
   }
 
   return (
-    <main>
-      <div className="flex items-center justify-between mb-6">
+    <main className="px-3 sm:px-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
         <h1 className="text-2xl font-bold">Manage Post</h1>
         <button
           onClick={() => startEdit()}
@@ -168,8 +154,7 @@ export default function AdminBlogPage() {
         </button>
       </div>
 
-      {/* Bộ lọc status */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
         <label className="text-sm font-medium">Filter by Status:</label>
         <select
           value={filterStatus}
@@ -183,90 +168,46 @@ export default function AdminBlogPage() {
         </select>
       </div>
 
-      {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setModalOpen(false)} />
-          <div className="relative z-10 w-[95%] max-w-4xl bg-white rounded-lg shadow p-6 overflow-y-auto">
+          <div className="relative z-10 w-full sm:w-[95%] max-w-4xl bg-white rounded-lg shadow p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-3">
               {editing ? "Edit Post" : "Create Post"}
             </h3>
 
             <form onSubmit={handleSave} className="grid gap-3">
-              {/* Title + Author */}
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  className="rounded border px-3 py-2 w-full"
-                  placeholder="Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <input
-                  className="rounded border px-3 py-2 w-full"
-                  placeholder="Author"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                />
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input className="rounded border px-3 py-2" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                <input className="rounded border px-3 py-2" placeholder="Author" value={author} onChange={(e) => setAuthor(e.target.value)} />
               </div>
 
-              {/* Excerpt */}
-              <input
-                className="rounded border px-3 py-2 w-full"
-                placeholder="Excerpt"
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-              />
+              <input className="rounded border px-3 py-2" placeholder="Excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
 
-              {/* Thumbnail + Date */}
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  className="rounded border px-3 py-2 w-full"
-                  placeholder="Thumbnail URL"
-                  value={thumbnailUrl}
-                  onChange={(e) => setThumbnailUrl(e.target.value)}
-                />
-                <input
-                  type="datetime-local"
-                  className="rounded border px-3 py-2 w-full"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                />
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input className="rounded border px-3 py-2" placeholder="Thumbnail URL" value={thumbnailUrl} onChange={(e) => setThumbnailUrl(e.target.value)} />
+                <input type="datetime-local" className="rounded border px-3 py-2" value={date} onChange={(e) => setDate(e.target.value)} />
               </div>
 
-            <div className="mb-2 border rounded overflow-hidden">
-              <div className="h-56" style={{ minHeight: 160, maxHeight: 300, overflowY: 'auto' }}>
-                {/* @ts-ignore */}
-                <ReactQuill
-                  value={content}
-                  onChange={setContent}
-                  style={{ height: "100%" }}
-                />
+              <div className="border rounded overflow-hidden h-56">
+                <ReactQuill value={content} onChange={setContent} style={{ height: "100%" }} />
               </div>
-            </div>
 
-
-              {/* Category + Tags */}
-              <div className="grid grid-cols-2 gap-3">
-                {/* Category */}
+              <div className="grid sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium mb-1">Category</label>
                   <select
                     value={categoryId || ""}
-                    onChange={(e) =>
-                      setCategoryId(e.target.value ? Number(e.target.value) : undefined)
-                    }
+                    onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : undefined)}
                     className="rounded border px-3 py-2 w-full"
                   >
                     <option value="">-- No category --</option>
                     {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
+                      <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
                   </select>
                 </div>
 
-                {/* Tags */}
                 <div>
                   <label className="text-sm font-medium mb-1">Tags</label>
                   <div className="flex flex-wrap gap-2 border rounded px-2 py-2 min-h-[44px]">
@@ -294,7 +235,7 @@ export default function AdminBlogPage() {
                         + Add
                       </button>
                       {tagDropdownOpen && (
-                        <div className="absolute left-0 mt-1 w-40 bg-white border rounded shadow-lg z-10">
+                        <div className="absolute left-0 mt-1 w-40 bg-white border rounded shadow-lg z-10 max-h-40 overflow-auto">
                           {tags.map((tg) => {
                             const tid = String(tg.id);
                             const selected = selectedTags.includes(tid);
@@ -324,7 +265,6 @@ export default function AdminBlogPage() {
                 </div>
               </div>
 
-              {/* Status */}
               <div>
                 <label className="text-sm font-medium mb-1">Status</label>
                 <select
@@ -338,12 +278,8 @@ export default function AdminBlogPage() {
                 </select>
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-2 mt-4">
-                <button
-                  disabled={loading}
-                  className="rounded bg-blue-600 px-4 py-2 text-white"
-                >
+              <div className="flex flex-wrap gap-2 mt-4">
+                <button disabled={loading} className="rounded bg-blue-600 px-4 py-2 text-white">
                   Save
                 </button>
                 <button
@@ -359,12 +295,11 @@ export default function AdminBlogPage() {
         </div>
       )}
 
-      {/* Danh sách bài viết */}
-      <section>
+      <section className="mt-6">
         <h2 className="font-semibold mb-4">Posts</h2>
         {loading && <div className="text-gray-600">Loading…</div>}
         {error && <div className="text-red-600">{error}</div>}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {result?.items?.length ? (
             result.items.map((p) => (
               <PostItem
@@ -375,12 +310,11 @@ export default function AdminBlogPage() {
               />
             ))
           ) : (
-            <div className="text-gray-600">No posts</div>
+            <div className="text-gray-600 col-span-full text-center">No posts</div>
           )}
         </div>
       </section>
 
-      {/* Confirm delete */}
       <ConfirmModal
         isOpen={deleteId !== null}
         title="Delete Post"

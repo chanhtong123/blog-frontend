@@ -16,11 +16,13 @@ export type MenuItem = {
 export default function AdminSidebar({
   open,
   items,
-  top = "4rem",
+  top = "4rem", // Chiều cao navbar mặc định 64px
+  onClose,
 }: {
   open: boolean;
   items: MenuItem[];
   top?: string;
+  onClose?: () => void;
 }) {
   const pathname = usePathname();
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
@@ -28,14 +30,28 @@ export default function AdminSidebar({
   const toggleDropdown = (id: string) =>
     setOpenDropdowns((s) => ({ ...s, [id]: !s[id] }));
 
+  const handleLinkClick = () => {
+    if (onClose) onClose(); // Đóng sidebar khi click link ở mobile
+  };
+
   return (
     <aside
-      className={`${open ? "translate-x-0" : "-translate-x-full"} fixed left-0 z-40 w-64 transition-transform sm:translate-x-0`}
-      style={{ top: top, height: `calc(100vh - ${top})` }}
+      className={clsx(
+        // Khi ở mobile => fixed để overlay, khi desktop => sticky
+        "z-40 w-64 transition-transform duration-300 ease-in-out",
+        open
+          ? "translate-x-0 fixed left-0"
+          : "-translate-x-full fixed left-0",
+        "md:translate-x-0 md:sticky md:top-0 md:h-screen"
+      )}
+      style={{
+        top, // cách top bằng chiều cao navbar
+        height: `calc(100vh - ${top})`, // luôn đầy chiều cao dưới navbar
+      }}
       aria-label="Sidebar"
     >
-      <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-        <ul className="space-y-2 font-medium">
+      <div className="h-full overflow-y-auto bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+        <ul className="space-y-2 font-medium px-2 py-3">
           {items.map((item) => {
             const isActive = item.href && pathname.startsWith(item.href);
 
@@ -44,9 +60,9 @@ export default function AdminSidebar({
                 <li key={item.id}>
                   <button
                     onClick={() => toggleDropdown(item.id)}
-                    className="flex w-full items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    className="flex w-full items-center justify-between p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   >
-                    <span className="flex-1 text-left">{item.label}</span>
+                    <span>{item.label}</span>
                     <svg
                       className={clsx(
                         "w-3 h-3 transition-transform",
@@ -74,6 +90,7 @@ export default function AdminSidebar({
                           <li key={child.id}>
                             <Link
                               href={child.href ?? "#"}
+                              onClick={handleLinkClick}
                               className={clsx(
                                 "block rounded-lg px-3 py-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-700",
                                 childActive
@@ -96,14 +113,15 @@ export default function AdminSidebar({
               <li key={item.id}>
                 <Link
                   href={item.href ?? "#"}
+                  onClick={handleLinkClick}
                   className={clsx(
-                    "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700",
+                    "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
                     isActive
                       ? "bg-blue-100 text-blue-700 dark:bg-gray-700 dark:text-white"
                       : "text-gray-900 dark:text-gray-200"
                   )}
                 >
-                  <span className="ml-2">{item.label}</span>
+                  <span>{item.label}</span>
                   {item.badge && (
                     <span className="ml-auto inline-flex items-center justify-center rounded-full bg-gray-100 px-2 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                       {item.badge}
