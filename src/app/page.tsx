@@ -13,9 +13,9 @@ export default function Portfolio() {
     <>
       {/* <Navbar /> */}
       <Hero />
-      <Clients />
+      {/* <Clients /> */}
       <Projects />
-      <PopularClients />
+      {/* <PopularClients /> */}
       <ContactForm />
       <Footer />
     </>

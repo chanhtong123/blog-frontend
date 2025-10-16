@@ -53,15 +53,15 @@ export default function Navbar() {
       <div className="max-w-screen-xl mx-auto flex items-center justify-between p-4">
         {/* LOGO */}
         <Link href="/" className="flex items-center space-x-3">
-          <Image
+          {/* <Image
             src="https://scontent.fsgn5-15.fna.fbcdn.net/v/t39.30808-1/552403725_2861723887358331_3843461949434406898_n.jpg"
             alt="Logo"
             width={32}
             height={32}
             unoptimized
             className="rounded-full"
-          />
-          <span className="text-2xl font-semibold text-black">Chanh blog</span>
+          /> */}
+          <span className="text-2xl font-semibold text-black">ADRIAN TECH REVIEW</span>
         </Link>
 
         {/* DESKTOP MENU */}

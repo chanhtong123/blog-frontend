@@ -14,13 +14,13 @@ function Hero() {
   color="blue-gray"
   className="mb-4 lg:text-5xl !leading-tight text-3xl"
 >
-  Welcome to Mr.AGO
+  Welcome to ADRIAN TECH
 </Typography>
 <Typography
   variant="lead"
   className="mb-4 !text-gray-500 md:pr-16 xl:pr-28"
 >
-  Hi, I&apos;m Mr.AGO. I review a wide range of products and projects—from tech gadgets and apps to lifestyle and beauty.  
+  Hi, I&apos;m ADRIAN TECH. I review a wide range of products and projects—from tech gadgets and apps to lifestyle and beauty.  
   My goal is to give honest insights so you can make informed choices and discover the best options out there.
 </Typography>
 
@@ -52,10 +52,10 @@ function Hero() {
 
         </div>
         <Image
-          width={1024}
-          height={1024}
+          width={300}
+          height={530000}
           alt="team work"
-          src={`${getImagePrefix()}image/image-7.svg`}
+          src={`${getImagePrefix()}image/avt.png`}
           className="h-[36rem] w-full rounded-xl object-cover"
         />
       </div>
