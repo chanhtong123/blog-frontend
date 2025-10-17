@@ -57,13 +57,13 @@ export default function Comments({
       <form onSubmit={handleSubmit} className="mb-6 space-y-3">
         <input
           type="text"
-          placeholder="Tên của bạn (tùy chọn)"
+          placeholder="Your name (optional)"
           value={authorName}
           onChange={(e) => setAuthorName(e.target.value)}
           className="w-full border rounded px-3 py-2"
         />
         <textarea
-          placeholder="Viết bình luận..."
+          placeholder="Write your comment here..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="w-full border rounded px-3 py-2 h-24"
@@ -74,13 +74,13 @@ export default function Comments({
           disabled={submitting}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
         >
-          {submitting ? "Đang gửi..." : "Gửi bình luận"}
+          {submitting ? "Pending" : "Comment"}
         </button>
       </form>
 
       {/* 🔹 Danh sách bình luận */}
       {comments.length === 0 ? (
-        <p className="text-gray-500">Chưa có bình luận nào.</p>
+        <p className="text-gray-500"></p>
       ) : (
         <ul className="space-y-4">
           {comments.map((c) => (
