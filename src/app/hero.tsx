@@ -1,65 +1,64 @@
 "use client";
 
 import Image from "next/image";
-import { Input, Button, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import { getImagePrefix } from "../../utils/utils";
+import { FaYoutube, FaXTwitter } from "react-icons/fa6";
 
 function Hero() {
   return (
     <header className="bg-white p-8">
-      <div className="container mx-auto grid h-full gap-10 min-h-[60vh] w-full grid-cols-1 items-center lg:grid-cols-2">
+      <div className="container mx-auto grid min-h-[60vh] w-full grid-cols-1 items-center gap-10 lg:grid-cols-2">
+        {/* LEFT SIDE */}
         <div className="row-start-2 lg:row-auto">
           <Typography
             variant="h1"
             color="blue-gray"
-            className="mb-4 lg:text-5xl !leading-tight text-3xl"
+            className="mb-4 text-3xl lg:text-5xl !leading-tight"
           >
             Welcome to ADRIAN TECH
           </Typography>
+
           <Typography
             variant="lead"
-            className="mb-4 !text-gray-500 md:pr-16 xl:pr-28"
+            className="mb-6 !text-gray-500 md:pr-16 xl:pr-28"
           >
-            Hi, I&apos;m ADRIAN TECH. I review a wide range of products and projects—from tech gadgets and apps to lifestyle and beauty.
-            My goal is to give honest insights so you can make informed choices and discover the best options out there.
+            Hi, I&apos;m ADRIAN TECH. I review a wide range of products and projects—from
+            tech gadgets and apps to lifestyle and beauty. My goal is to give honest insights so you can make informed choices and discover the best options out there.
           </Typography>
 
-
-
-          {/* <div className="grid">
-            <Typography
-              variant="small"
-              className="mb-2 text-gray-900 font-medium"
+          {/* SOCIAL LINKS */}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.youtube.com/@ADRIANTECH212"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-red-600 hover:text-white"
             >
-              Your email
-            </Typography>
-            <div className="mb-2 flex w-full flex-col gap-4 md:w-10/12 md:flex-row">
-              {/* @ts-ignore */}
-          {/* <Input color="gray" label="Enter your email" size="lg" />
-              <Button color="gray" className="w-full px-4 md:w-[12rem]">
-                require offer
-              </Button>
-            </div>
-          // </div> */}
-
-
-          {/* <Typography variant="small" className="font-normal !text-gray-500">
-            Read my{" "}
-            <a href="#" className="font-medium underline transition-colors">
-              Terms and Conditions
+              <FaYoutube className="text-lg" />
+              @ADRIANTECH212
             </a>
-          </Typography> */}
 
+            <a
+              href="https://x.com/ADRIANTECH212"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-black hover:text-white"
+            >
+              <FaXTwitter className="text-lg" />
+              @ADRIANTECH212
+            </a>
+          </div>
         </div>
+
+        {/* RIGHT SIDE (IMAGE) */}
         <Image
           width={500}
           height={500}
           alt="team work"
           src={`${getImagePrefix()}image/avt.png`}
-          className="w-98 h-98 rounded-xl object-cover mx-auto"
+          className="mx-auto w-80 h-80 rounded-2xl object-cover shadow-lg"
         />
-
-
       </div>
     </header>
   );
