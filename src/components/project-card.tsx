@@ -8,30 +8,62 @@ interface ProjectCardProps {
   date?: string;
 }
 
-export function ProjectCard({ img, title, excerpt }: ProjectCardProps) {
+export function ProjectCard({ img, title, excerpt, date }: ProjectCardProps) {
   const stripHtml = (s: string) =>
     s ? s.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim() : "";
   const truncate = (s: string, n = 140) =>
     s.length > n ? s.slice(0, n).trimEnd() + "…" : s;
   const clean = truncate(stripHtml(excerpt || ""), 140);
 
+  const formattedDate = date
+    ? new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+    : "";
+
   return (
-    <Card color="white" shadow={false} className="max-w-sm bg-white shadow-sm dark:bg-gray-800 dark:border-gray-700">
-      <CardHeader floated={false} className="relative mx-0 mt-0 mb-6 h-48 overflow-hidden">
+    <Card className="max-w-sm overflow-hidden rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl dark:bg-gray-800">
+      {/* Header Image */}
+      <CardHeader
+        floated={false}
+        shadow={false}
+        className="relative h-52 overflow-hidden rounded-none"
+      >
         <Image
           src={img || "/placeholder.jpg"}
           alt={title}
           fill
           sizes="100vw"
           unoptimized
-          className="object-cover"
+          className="object-cover transition-transform duration-300 hover:scale-105"
         />
       </CardHeader>
-      <CardBody className="p-5">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{title}</h5>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{clean}</p>
-        <Button className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-black hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          Read more
+
+      {/* Content */}
+      <CardBody className="px-5 py-6">
+        {/* Date */}
+        {formattedDate && (
+          <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+            {formattedDate}
+          </p>
+        )}
+
+        {/* Title */}
+        <h5 className="mb-3 text-xl font-semibold leading-snug text-gray-900 dark:text-white">
+          {title}
+        </h5>
+
+        {/* Description */}
+        <p className="mb-5 text-gray-600 dark:text-gray-300">{clean}</p>
+
+        {/* Button */}
+        <Button
+          className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-md transition-all hover:bg-gray-700 dark:bg-blue-600 dark:hover:bg-blue-700"
+          ripple={false}
+        >
+          Read More
         </Button>
       </CardBody>
     </Card>
