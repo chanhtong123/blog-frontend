@@ -15,6 +15,7 @@ export default function Portfolio() {
       <Hero />
       {/* <Clients /> */}
       <Projects />
+      
       {/* <PopularClients /> */}
       <ContactForm />
       <Footer />

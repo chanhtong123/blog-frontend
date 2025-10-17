@@ -122,6 +122,7 @@ export default function AdminBlogPage() {
       if (editing) await updatePost(editing.id, payload);
       else await createPost(payload);
 
+
       setModalOpen(false);
       await refresh();
     } catch (e) {
@@ -190,28 +191,10 @@ export default function AdminBlogPage() {
                 <input type="datetime-local" className="rounded border px-3 py-2" value={date} onChange={(e) => setDate(e.target.value)} />
               </div>
 
-              {/* <div className="border rounded overflow-hidden h-56">
+              <div className="border rounded overflow-hidden h-56">
                 <ReactQuill value={content} onChange={setContent} style={{ height: "100%" }} />
-              </div> */}
+              </div>
 
-              {/* ✅ Preview có nhúng YouTube */}
-              <div
-                className="border rounded p-3 bg-gray-50 mt-3 max-h-80 overflow-y-auto"
-                dangerouslySetInnerHTML={{
-                  __html: content.replace(
-                    /(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)(?:[&?][^\s]*)?)/g,
-                    (match, url, videoId) =>
-                      `<div class="my-4 aspect-video">
-          <iframe width="100%" height="315"
-            src="https://www.youtube.com/embed/${videoId}"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>`
-                  ),
-                }}
-              />
 
 
               <div className="grid sm:grid-cols-2 gap-3">
@@ -270,8 +253,8 @@ export default function AdminBlogPage() {
                                   setTagDropdownOpen(false);
                                 }}
                                 className={`block w-full text-left px-3 py-1 text-sm ${selected
-                                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                    : "hover:bg-blue-100"
+                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                  : "hover:bg-blue-100"
                                   }`}
                               >
                                 {tg.name}

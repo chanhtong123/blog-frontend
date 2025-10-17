@@ -9,20 +9,20 @@ function Hero() {
     <header className="bg-white p-8">
       <div className="container mx-auto grid h-full gap-10 min-h-[60vh] w-full grid-cols-1 items-center lg:grid-cols-2">
         <div className="row-start-2 lg:row-auto">
-<Typography
-  variant="h1"
-  color="blue-gray"
-  className="mb-4 lg:text-5xl !leading-tight text-3xl"
->
-  Welcome to ADRIAN TECH
-</Typography>
-<Typography
-  variant="lead"
-  className="mb-4 !text-gray-500 md:pr-16 xl:pr-28"
->
-  Hi, I&apos;m ADRIAN TECH. I review a wide range of products and projects—from tech gadgets and apps to lifestyle and beauty.  
-  My goal is to give honest insights so you can make informed choices and discover the best options out there.
-</Typography>
+          <Typography
+            variant="h1"
+            color="blue-gray"
+            className="mb-4 lg:text-5xl !leading-tight text-3xl"
+          >
+            Welcome to ADRIAN TECH
+          </Typography>
+          <Typography
+            variant="lead"
+            className="mb-4 !text-gray-500 md:pr-16 xl:pr-28"
+          >
+            Hi, I&apos;m ADRIAN TECH. I review a wide range of products and projects—from tech gadgets and apps to lifestyle and beauty.
+            My goal is to give honest insights so you can make informed choices and discover the best options out there.
+          </Typography>
 
 
 
@@ -52,12 +52,14 @@ function Hero() {
 
         </div>
         <Image
-          width={300}
-          height={530000}
+          width={500}
+          height={500}
           alt="team work"
           src={`${getImagePrefix()}image/avt.png`}
-          className="h-[36rem] w-full rounded-xl object-cover"
+          className="w-98 h-98 rounded-xl object-cover mx-auto"
         />
+
+
       </div>
     </header>
   );

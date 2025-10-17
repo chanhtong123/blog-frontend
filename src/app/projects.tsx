@@ -23,8 +23,8 @@ export function Projects() {
   }, []);
 
   return (
-      <section className="py-28 px-8">
-      <div className="container mx-auto mb-20 text-center"></div>
+      <section className="pt-2 pb-20 px-2">
+      <div className="container mx-auto mb-6 text-center"></div>
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-20 md:grid-cols-2 xl:grid-cols-4">
           {posts.map((p) => (
             <div key={p.id} className="block">
