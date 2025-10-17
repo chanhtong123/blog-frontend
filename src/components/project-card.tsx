@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardHeader, CardBody, Button } from "@material-tailwind/react";
+import { Card, CardBody, Button } from "@material-tailwind/react";
 
 interface ProjectCardProps {
   title: string;
@@ -25,12 +25,8 @@ export function ProjectCard({ img, title, excerpt, date }: ProjectCardProps) {
 
   return (
     <Card className="max-w-sm overflow-hidden rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl dark:bg-gray-800">
-      {/* Header Image */}
-      <CardHeader
-        floated={false}
-        shadow={false}
-        className="relative h-52 overflow-hidden rounded-none"
-      >
+      {/* Thumbnail */}
+      <div className="relative h-52 w-full overflow-hidden">
         <Image
           src={img || "/placeholder.jpg"}
           alt={title}
@@ -39,7 +35,7 @@ export function ProjectCard({ img, title, excerpt, date }: ProjectCardProps) {
           unoptimized
           className="object-cover transition-transform duration-300 hover:scale-105"
         />
-      </CardHeader>
+      </div>
 
       {/* Content */}
       <CardBody className="px-5 py-6">
